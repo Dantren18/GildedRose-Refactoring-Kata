@@ -17,10 +17,20 @@ describe('Gilded Rose', () => {
     const items = gildedRose.updateQuality();
     expect(items[0].quality).toBe(18);
   });
-  
   it('should not allow quality to be negative', () => {
     const gildedRose = new GildedRose([new Item('foo', 0, 0)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).toBe(0);
   });
+  it('should increase quality of "Aged Brie" as it gets older', () => {
+    const gildedRose = new GildedRose([new Item('Aged Brie', 2, 0)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(1);
+  });
+  it('should not allow quality to be more than 50', () => {
+    const gildedRose = new GildedRose([new Item('Aged Brie', 2, 50)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(50);
+  });
+
 });
