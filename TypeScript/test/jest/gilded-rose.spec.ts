@@ -32,5 +32,36 @@ describe('Gilded Rose', () => {
     const items = gildedRose.updateQuality();
     expect(items[0].quality).toBe(50);
   });
+  it('"Sulfuras" never has to be sold or decreases in Quality', () => {
+    const gildedRose = new GildedRose([new Item('Sulfuras, Hand of Ragnaros', 2, 80)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(80);
+    expect(items[0].sellIn).toBe(2);
+  });
 
+  it('"Backstage passes" increases in Quality as its SellIn value approaches', () => {
+    const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 15, 20)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(21);
+  });
+  it('"Backstage passes" increases in Quality by 2 when there are 10 days or less', () => {
+    const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 10, 20)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(22);
+  });
+  it('"Backstage passes" increases in Quality by 3 when there are 5 days or less', () => {
+    const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 5, 20)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(23);
+  });
+  it('"Backstage passes" drops Quality to 0 after the concert', () => {
+    const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 0, 20)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(0);
+  });
+  it('"Conjured" items degrade in Quality twice as fast as normal items', () => {
+   const gildedRose = new GildedRose([new Item('Conjured Mana Cake', 3, 6)]);
+   const items = gildedRose.updateQuality();
+   expect(items[0].quality).toBe(4);
+  });
 });
